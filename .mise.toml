@@ -1,0 +1,4 @@
+[tools]
+pre-commit = '3.7.1'
+terraform = '1.10.1'
+terraform-docs = '0.19.0'
