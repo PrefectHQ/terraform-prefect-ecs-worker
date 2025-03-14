@@ -124,6 +124,7 @@ resource "aws_iam_role_policy" "prefect_worker_allow_ecs_task" {
           "ecs:RegisterTaskDefinition",
           "ecs:RunTask",
           "ecs:StopTask",
+          "ecs:TagResource",
           "iam:PassRole",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
