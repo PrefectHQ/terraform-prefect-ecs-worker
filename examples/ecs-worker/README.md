@@ -23,3 +23,38 @@ command from the CLI. The flow run will execute on your new ECS work pool.
 
 As an alternative to `prefect.yaml`, deployments can be managed by Terraform using the Prefect provider's
 [`deployment` resource](https://registry.terraform.io/providers/PrefectHQ/prefect/latest/docs/resources/deployment).
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_prefect_ecs_worker"></a> [prefect\_ecs\_worker](#module\_prefect\_ecs\_worker) | prefecthq/ecs-worker/prefect | 1.0.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.19.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_ecr_repository.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
+
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+<!-- END_TF_DOCS -->
