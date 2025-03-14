@@ -8,18 +8,32 @@ Note that flows will run inside the worker ECS task, as opposed to becoming thei
 
 ## Requirements
 
-To start, you will need:
+You will need an AWS user with the following permissions. This will allow
+Terraform to create and manage the resources required to create the Prefect
+worker in ECS. Some example policies that provide these permissions are
+mentioned as a starting point, but we recommend providing more restricted
+access.
 
-- A local installation of the Terraform CLI
+- `ec2:CreateVpc` (provided by `AmazonVPCFullACcess` policy)
+- `ecs:CreateCluster` (provided by `AmazonECS_FullAccess` policy)
+- `secretsmanager:CreateSecret` (provided by `SecretsManagerReadWrite` policy)
+- `iam:CreateRole` (provided by `IAMFullAcess`)
+- `logs:createLogGroup` (provided by `CloudWatchLogsFullAccess` policy)
+- `ecr:CreateRepository` (provided by `AmazonEC2ContainerRegistryFullAccess` policy)
+
+Next, you will need:
+
+- The [Terraform CLI](https://developer.hashicorp.com/terraform/cli)
+- The [Prefect CLI](https://docs.prefect.io/v3/get-started/install)
 - Your Prefect account ID
 - Your Prefect workspace ID
 - Your Prefect API key
-- A subnet where Fargate will create ECS tasks
-- A name for your deployment
 
 ## Usage
 
-In order to avoid accidentally committing your API key, consider structuring your project as follows,
+### Configure Terraform
+
+The following is an example directory structure to use this module:
 
 ```
 .
@@ -45,16 +59,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
-// Don't panic! These values are just random uuid.uuid4()s
 module "prefect_ecs_worker" {
-  source = "github.com/PrefectHQ/examples/infra/amazon-ecs-worker"
+  source = "prefecthq/ecs-worker/prefect"
+
+  name                  = "dev"
 
   vpc_id                = "vpc-acfc2092275244ca8"
   worker_subnets        = [
     "subnet-014aa5f348034e45b",
     "subnet-df23ae9eab1f49af9"
   ]
-  name                  = "dev"
 
   prefect_api_key       = var.prefect_api_key
   prefect_account_id    = "6e02a1db-07de-4760-a15d-60d8fe0b04e1"
@@ -64,13 +78,44 @@ module "prefect_ecs_worker" {
 }
 ```
 
-Assuming the file structure above, you can run `terraform init` followed by
-`terraform apply` to create the resources. Check out the [Inputs](#inputs)
-section below for more options.
+See the [Inputs](#inputs) section below for more options.
 
-Once complete, you will see a new work pool available in Prefect. You can then
-use this work pool for your deployments. See the
-[deployments documentation](https://docs.prefect.io/v3/deploy/index) for more information.
+See the [full example](./examples/ecs-worker/), which makes use of an AWS-provided
+module to create most of the AWS resources automatically.
+
+You can run `terraform init` followed by `terraform apply` to create the
+resources.
+
+### Configure the Prefect work pool
+
+Once `terraform apply` has completed successfully, within a few minutes you should
+see a new ECS work pool in the UI.
+
+Click the three dots to open the context menu, and select `Edit`.
+
+Provide the following values for the work pool:
+
+| Field | Required | Notes | Example |
+|-|-|-|-|
+| Execution role ARN | Yes | This is specified in the task definition resource, but is still needed in the work pool settings. | `arn:aws:iam::123456789:role/prefect-worker-execution-role-<name>` |
+| VPC ID | Yes | Required when using the `awsvpc` network mode. | `vpc-123abc456def` |
+| Cluster | No | If not set, uses the default cluster. | `arn:aws:ecs:us-east-1:123456789:cluster/prefect-worker-<name>`
+| Image | No | Image setting is retrieved from the deployment configuration, but a default can be provided here. | `123456.dkr.ecr.us-east-1.amazonaws.com/<image_name>:latest` |
+| Task role ARN | No | Defaults to the task role on the service, but can be overridden here. | `arn:aws:iam::123456789:role/prefect-worker-task-role-<name>` |
+
+More details on these settings are available on the `Edit` page of the work pool.
+
+This configuration can also be provided in the base job template. For more information, see
+[work pools](https://docs.prefect.io/v3/deploy/infrastructure-concepts/work-pools).
+
+Additionally, work pools and the associated base job templates can be managed
+with the Prefect Terraform provider. See the
+[`work_pool`](https://registry.terraform.io/providers/PrefectHQ/prefect/latest/docs/resources/work_pool)
+resource documentation for more information.
+
+Once complete, you will see a new work pool available in Prefect.
+You can then use this work pool for your deployments. See the [deployments
+documentation](https://docs.prefect.io/v3/deploy/index) for more information.
 
 ## Reference
 
@@ -79,6 +124,15 @@ The [terraform docs](https://terraform-docs.io/) below can be generated with the
 ```sh
 terraform-docs markdown table . --output-file README.md
 ```
+
+## Further reading
+
+- [Prefect ECS guide](https://docs.prefect.io/integrations/prefect-aws/ecs_guide)
+- [Amazon ECS networking best practices](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/networking-best-practices.html)
+- [Troubleshoot ECS pulling secrets](https://repost.aws/knowledge-center/ecs-unable-to-pull-secrets)
+- https://registry.terraform.io/providers/PrefectHQ/prefect/latest/docs/resources/deployment
+- https://docs.prefect.io/v3/deploy/infrastructure-concepts/prefect-yaml
+
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
