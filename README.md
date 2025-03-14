@@ -129,8 +129,6 @@ terraform-docs markdown table . --output-file README.md
 - [Prefect ECS guide](https://docs.prefect.io/integrations/prefect-aws/ecs_guide)
 - [Amazon ECS networking best practices](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/networking-best-practices.html)
 - [Troubleshoot ECS pulling secrets](https://repost.aws/knowledge-center/ecs-unable-to-pull-secrets)
-- https://registry.terraform.io/providers/PrefectHQ/prefect/latest/docs/resources/deployment
-- https://docs.prefect.io/v3/deploy/infrastructure-concepts/prefect-yaml
 
 
 <!-- BEGIN_TF_DOCS -->
