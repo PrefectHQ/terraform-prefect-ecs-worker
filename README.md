@@ -1,7 +1,7 @@
 # Terraform Prefect ECS Module
 
 This module deploys a Prefect 3 worker onto ECS Fargate using
-[Terraform](https://www.terraform.io/). It is intended to be used as a
+[Terraform](https://www.terraform.io/).
 
 ![image](https://github.com/PrefectHQ/prefect-recipes/assets/68969861/d148af90-58dd-4ce2-a160-e23fada6c895)
 
