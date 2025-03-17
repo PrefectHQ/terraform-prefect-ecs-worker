@@ -66,7 +66,7 @@ resource "aws_iam_role_policy" "ssm_allow_read_prefect_api_key" {
   })
 }
 
-resource "aws_iam_role_policy" "logs_allow_create_log_group" {
+resource "aws_iam_role_policy" "allow_create_log_group" {
   name = "logs-allow-create-log-group-${var.name}"
   role = aws_iam_role.prefect_worker_execution_role.id
 
