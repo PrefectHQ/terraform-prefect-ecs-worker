@@ -98,7 +98,7 @@ Provide the following values for the work pool:
 |-|-|-|-|
 | Execution role ARN | Yes | This is specified in the task definition resource, but is still needed in the work pool settings. | `arn:aws:iam::123456789:role/prefect-worker-execution-role-<name>` |
 | VPC ID | Yes | Required when using the `awsvpc` network mode. | `vpc-123abc456def` |
-| Cluster | No | If not set, uses the default cluster. | `arn:aws:ecs:us-east-1:123456789:cluster/prefect-worker-<name>`
+| Cluster | No | If not set, uses the default cluster. | `arn:aws:ecs:us-east-1:123456789:cluster/prefect-worker-<name>` |
 | Image | No | Image setting is retrieved from the deployment configuration, but a default can be provided here. | `123456.dkr.ecr.us-east-1.amazonaws.com/<image_name>:latest` |
 | Task role ARN | No | Defaults to the task role on the service, but can be overridden here. | `arn:aws:iam::123456789:role/prefect-worker-task-role-<name>` |
 
@@ -118,10 +118,10 @@ documentation](https://docs.prefect.io/v3/deploy/index) for more information.
 
 ## Reference
 
-The [terraform docs](https://terraform-docs.io/) below can be generated with the following command:
+The [Terraform docs](https://github.com/hashicorp/terraform-plugin-docs) below can be generated with the following command:
 
 ```sh
-terraform-docs markdown table . --output-file README.md
+make docs
 ```
 
 ## Further reading
