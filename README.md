@@ -95,7 +95,7 @@ Click the three dots to open the context menu, and select `Edit`.
 Provide the following values for the work pool:
 
 | Field | Required | Notes | Example |
-|-|-|-|-|
+|-------|----------|-------|---------|
 | Execution role ARN | Yes | This is specified in the task definition resource, but is still needed in the work pool settings. | `arn:aws:iam::123456789:role/prefect-worker-execution-role-<name>` |
 | VPC ID | Yes | Required when using the `awsvpc` network mode. | `vpc-123abc456def` |
 | Cluster | No | If not set, uses the default cluster. | `arn:aws:ecs:us-east-1:123456789:cluster/prefect-worker-<name>` |
