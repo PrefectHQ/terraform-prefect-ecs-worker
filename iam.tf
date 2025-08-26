@@ -117,3 +117,65 @@ resource "aws_iam_role_policy" "prefect_worker_allow_ecs_task" {
     ]
   })
 }
+
+resource "aws_iam_role_policy_attachment" "this" {
+  for_each = var.worker_task_role_extra_policy_attachment
+
+  role       = aws_iam_role.prefect_worker_task_role[0].name
+  policy_arn = each.value
+}
+
+# ---------- Eventing Policies ----------
+data "aws_iam_policy_document" "prefect_worker_read_sqs" {
+  count = var.enable_sqs_monitoring && var.worker_task_role_arn == null ? 1 : 0
+
+  statement {
+    sid    = "ReadFromQueue"
+    effect = "Allow"
+    actions = [
+      "sqs:ReceiveMessage",
+      "sqs:DeleteMessage",
+      "sqs:ChangeMessageVisibility",
+      "sqs:GetQueueUrl"
+    ]
+
+    resources = [aws_sqs_queue.this[0].arn]
+  }
+}
+
+resource "aws_iam_policy" "prefect_worker_read_sqs" {
+  count = var.enable_sqs_monitoring && var.worker_task_role_arn == null ? 1 : 0
+
+  name   = "prefect-worker-allow-sqs-read-${var.name}"
+  policy = data.aws_iam_policy_document.prefect_worker_read_sqs[0].json
+}
+
+resource "aws_iam_role_policy_attachment" "prefect_worker_read_sqs" {
+  count = var.enable_sqs_monitoring && var.worker_task_role_arn == null ? 1 : 0
+
+  role       = aws_iam_role.prefect_worker_task_role[0].name
+  policy_arn = aws_iam_policy.prefect_worker_read_sqs[0].arn
+}
+
+data "aws_iam_policy_document" "eventbridge_to_sqs" {
+  count = var.enable_sqs_monitoring ? 1 : 0
+
+  statement {
+    sid     = "AllowEventBridgeToSend"
+    effect  = "Allow"
+    actions = ["sqs:SendMessage"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["events.amazonaws.com"]
+    }
+
+    resources = [aws_sqs_queue.this[0].arn]
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_cloudwatch_event_rule.this[0].arn]
+    }
+  }
+}

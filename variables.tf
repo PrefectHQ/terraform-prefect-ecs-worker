@@ -50,6 +50,12 @@ variable "worker_task_role_arn" {
   type        = string
 }
 
+variable "worker_task_role_extra_policy_attachment" {
+  description = "Extra IAM Policy ARNs to attach to the Prefect worker ECS task IAM role."
+  type        = set(string)
+  default     = []
+}
+
 variable "name" {
   description = "Unique name for this worker deployment"
   type        = string
@@ -86,4 +92,10 @@ variable "worker_type" {
   type        = string
   default     = "ecs"
   description = "Prefect worker type that gets passed into the Prefect worker start command"
+}
+
+variable "enable_sqs_monitoring" {
+  description = "Enables event-driven ECS task state observation for the Prefect ECS worker using EventBridge and SQS"
+  type        = bool
+  default     = true
 }

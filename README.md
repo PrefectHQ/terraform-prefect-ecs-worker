@@ -152,6 +152,8 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [aws_cloudwatch_event_rule.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
+| [aws_cloudwatch_event_target.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_cloudwatch_log_group.prefect_worker_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_ecs_cluster.prefect_worker_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster) | resource |
 | [aws_ecs_cluster_capacity_providers.prefect_worker_cluster_capacity_providers](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_cluster_capacity_providers) | resource |
@@ -167,6 +169,8 @@ No modules.
 | [aws_secretsmanager_secret_version.prefect_api_key_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_security_group.prefect_worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.network_outbound](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_sqs_queue.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue) | resource |
+| [aws_sqs_queue_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue_policy) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
@@ -180,6 +184,7 @@ No modules.
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID in which to create all resources | `string` | n/a | yes |
 | <a name="input_worker_subnets"></a> [worker\_subnets](#input\_worker\_subnets) | Subnet(s) to use for the worker | `list(string)` | n/a | yes |
 | <a name="input_worker_work_pool_name"></a> [worker\_work\_pool\_name](#input\_worker\_work\_pool\_name) | Work pool that the worker should poll | `string` | n/a | yes |
+| <a name="input_enable_sqs_monitoring"></a> [enable\_sqs\_monitoring](#input\_enable\_sqs\_monitoring) | Enables event-driven ECS task state observation for the Prefect ECS worker using EventBridge and SQS | `bool` | `true` | no |
 | <a name="input_secrets_manager_recovery_in_days"></a> [secrets\_manager\_recovery\_in\_days](#input\_secrets\_manager\_recovery\_in\_days) | Deletion delay for AWS Secrets Manager upon resource destruction | `number` | `30` | no |
 | <a name="input_worker_cpu"></a> [worker\_cpu](#input\_worker\_cpu) | CPU units to allocate to the worker | `number` | `1024` | no |
 | <a name="input_worker_desired_count"></a> [worker\_desired\_count](#input\_worker\_desired\_count) | Number of workers to run | `number` | `1` | no |
@@ -188,6 +193,7 @@ No modules.
 | <a name="input_worker_log_retention_in_days"></a> [worker\_log\_retention\_in\_days](#input\_worker\_log\_retention\_in\_days) | Number of days to retain worker logs | `number` | `30` | no |
 | <a name="input_worker_memory"></a> [worker\_memory](#input\_worker\_memory) | Memory units to allocate to the worker | `number` | `2048` | no |
 | <a name="input_worker_task_role_arn"></a> [worker\_task\_role\_arn](#input\_worker\_task\_role\_arn) | Optional task role ARN to pass to the worker. If not defined, a task role will be created | `string` | `null` | no |
+| <a name="input_worker_task_role_extra_policy_attachment"></a> [worker\_task\_role\_extra\_policy\_attachment](#input\_worker\_task\_role\_extra\_policy\_attachment) | Extra IAM Policy ARNs to attach to the Prefect worker ECS task IAM role. | `set(string)` | `[]` | no |
 | <a name="input_worker_type"></a> [worker\_type](#input\_worker\_type) | Prefect worker type that gets passed into the Prefect worker start command | `string` | `"ecs"` | no |
 
 ## Outputs

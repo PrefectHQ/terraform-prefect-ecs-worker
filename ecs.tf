@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "prefect_worker_task_definition" {
       command = ["prefect", "worker", "start", "-p", var.worker_work_pool_name, "--type", var.worker_type]
       cpu     = var.worker_cpu
       memory  = var.worker_memory
-      environment = [
+      environment = concat([
         {
           name  = "PREFECT_API_URL"
           value = "https://api.prefect.cloud/api/accounts/${var.prefect_account_id}/workspaces/${var.prefect_workspace_id}"
@@ -31,7 +31,14 @@ resource "aws_ecs_task_definition" "prefect_worker_task_definition" {
           name  = "EXTRA_PIP_PACKAGES"
           value = var.worker_extra_pip_packages
         }
-      ]
+        ],
+        var.enable_sqs_monitoring ? [
+          {
+            name  = "PREFECT_INTEGRATIONS_AWS_ECS_OBSERVER_SQS_QUEUE_NAME"
+            value = aws_sqs_queue.this[0].name
+          }
+        ] : []
+      )
       secrets = [
         {
           name      = "PREFECT_API_KEY"
