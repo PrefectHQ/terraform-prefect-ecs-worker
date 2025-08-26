@@ -161,9 +161,12 @@ data "aws_iam_policy_document" "eventbridge_to_sqs" {
   count = var.enable_sqs_monitoring ? 1 : 0
 
   statement {
-    sid     = "AllowEventBridgeToSend"
-    effect  = "Allow"
-    actions = ["sqs:SendMessage"]
+    sid    = "AllowEventBridgeToSend"
+    effect = "Allow"
+    actions = [
+      "sqs:SendMessage",
+      "sqs:SendMessageBatch"
+    ]
 
     principals {
       type        = "Service"
