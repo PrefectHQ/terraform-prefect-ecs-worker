@@ -32,6 +32,12 @@ resource "aws_ecs_task_definition" "prefect_worker_task_definition" {
           value = var.worker_extra_pip_packages
         }
         ],
+        [
+          for k, v in var.worker_extra_env : {
+            name  = k
+            value = v
+          }
+        ],
         var.enable_sqs_monitoring ? [
           {
             name  = "PREFECT_INTEGRATIONS_AWS_ECS_OBSERVER_SQS_QUEUE_NAME"

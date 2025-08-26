@@ -28,6 +28,12 @@ variable "worker_log_retention_in_days" {
   type        = number
 }
 
+variable "worker_extra_env" {
+  type        = map(string)
+  description = "Additional environment variables to inject into the worker container."
+  default     = {}
+}
+
 variable "worker_memory" {
   description = "Memory units to allocate to the worker"
   default     = 2048
