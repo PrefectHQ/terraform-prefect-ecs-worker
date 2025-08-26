@@ -1,0 +1,3 @@
+# Ignore Terraform providers
+.terraform/
+.terraform.*
