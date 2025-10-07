@@ -130,6 +130,22 @@ make docs
 - [Amazon ECS networking best practices](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/networking-best-practices.html)
 - [Troubleshoot ECS pulling secrets](https://repost.aws/knowledge-center/ecs-unable-to-pull-secrets)
 
+## Contributing
+
+Contributions are always welcome. To get started, run:
+
+```shell
+# Install pre-commit hooks
+pre-commit install
+
+# Install dependencies
+mise install
+```
+
+This uses [`mise`](https://mise.jdx.dev) as a user-friendly alternative to
+Make. You can run `mise tasks ls` to see available tasks and `mise run` to run
+a specific task. Additionally, `pre-commit` will make sure tasks like the
+generation of the documentation happens when committing changes.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

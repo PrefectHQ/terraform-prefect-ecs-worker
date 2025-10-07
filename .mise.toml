@@ -2,3 +2,11 @@
 pre-commit = '3.7.1'
 terraform = '1.10.1'
 terraform-docs = '0.19.0'
+
+[tasks.docs]
+description = "Build documentation for the module"
+run = "terraform-docs markdown table --output-file README.md ."
+
+[tasks.docs-examples]
+description = "Build documentation for the module"
+run = "terraform-docs markdown table --output-file README.md examples/ecs-worker"
