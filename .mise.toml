@@ -1,5 +1,5 @@
 [tools]
-pre-commit = '3.8.0'
+pre-commit = '4.6.1'
 terraform = '1.15.8'
 terraform-docs = '0.24.0'
 
