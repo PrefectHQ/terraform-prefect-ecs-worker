@@ -1,7 +1,7 @@
 [tools]
 pre-commit = '4.6.1'
-terraform = '1.10.1'
-terraform-docs = '0.19.0'
+terraform = '1.15.8'
+terraform-docs = '0.24.0'
 
 [tasks.docs]
 description = "Build documentation for the module"
