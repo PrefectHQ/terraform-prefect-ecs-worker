@@ -3,5 +3,14 @@
   "extends": [
     "github>PrefectHQ/renovate-config",
     "github>PrefectHQ/renovate-config:terraform"
-  ]
+  ],
+  "postUpgradeTasks": {
+    "description": "Override the :terraform preset default. This repo generates docs with TWO commands (the module docs via .terraform-docs.yaml, plus a separate examples/ecs-worker README), matching its two pre-commit terraform-docs hooks. The preset default only runs the first, so the examples README would drift and fail CI.",
+    "commands": [
+      "terraform-docs --config=.terraform-docs.yaml .",
+      "terraform-docs markdown table examples/ecs-worker --output-file README.md"
+    ],
+    "fileFilters": ["**/README.md"],
+    "executionMode": "branch"
+  }
 }
