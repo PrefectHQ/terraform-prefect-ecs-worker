@@ -1,6 +1,6 @@
 [tools]
 pre-commit = '4.6.2'
-terraform = '1.15.9'
+terraform = '1.16.0'
 terraform-docs = '0.24.0'
 
 [tasks.docs]
