@@ -15,5 +15,5 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Install tool dependencies
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
       - uses: pre-commit/action@v3.0.1
